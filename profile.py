@@ -181,6 +181,17 @@ else:
     rue2.Desire("rf-radiated" if params.TYPE == "ota" else "rf-controlled", 1)
     rue2.adb_target = "adb-tgt"
     rue2_enb1_rf = rue2.addInterface("enb2_rf")
+
+    # Create the RF link between each Nexus 5 UE and eNodeB
+    rflink1 = request.RFLink("rflink1")
+    rflink1.addInterface(enb1_rue1_rf)
+    rflink1.addInterface(rue1_enb1_rf)
+    rflink2 = request.RFLink("rflink2")
+    rflink2.addInterface(enb1_rue2_rf)
+    rflink2.addInterface(rue2_enb1_rf)
+
+    # Add a link connecting the NUC eNB and the OAI EPC node.
+    epclink.addNode(enb1)
 """
     # Add an OTS (Nexus 5) UE 3
     rue3 = request.UE("rue3")
@@ -201,24 +212,14 @@ else:
     rue4.Desire("rf-radiated" if params.TYPE == "ota" else "rf-controlled", 1)
     rue4.adb_target = "adb-tgt"
     rue4_enb1_rf = rue4.addInterface("enb4_rf")
-"""
-    # Create the RF link between each Nexus 5 UE and eNodeB
-    rflink1 = request.RFLink("rflink1")
-    rflink1.addInterface(enb1_rue1_rf)
-    rflink1.addInterface(rue1_enb1_rf)
-    rflink2 = request.RFLink("rflink2")
-    rflink2.addInterface(enb1_rue2_rf)
-    rflink2.addInterface(rue2_enb1_rf)
-"""
+
     rflink3 = request.RFLink("rflink3")
     rflink3.addInterface(enb1_rue3_rf)
     rflink3.addInterface(rue3_enb1_rf)
     rflink4 = request.RFLink("rflink4")
     rflink4.addInterface(enb1_rue4_rf)
-    rflink4.addInterface(rue4_enb1_rf)
-"""
-    # Add a link connecting the NUC eNB and the OAI EPC node.
-    epclink.addNode(enb1)
+    rflink4.addInterface(rue4_enb1_rf) """
+
 
 # Add OAI EPC (HSS, MME, SPGW) node.
 epc = request.RawPC("epc")
