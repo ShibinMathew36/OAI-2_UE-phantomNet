@@ -98,14 +98,6 @@ pc.defineParameter("FIXED_UE1", "Bind to a specific UE",
 pc.defineParameter("FIXED_UE2", "Bind to a specific UE",
                    portal.ParameterType.STRING, "", advanced=True,
                    longDescription="Input the name of a PhantomNet UE node to allocate (e.g., 'ue2').  Leave blank to let the mapping algorithm choose.")
-"""
-pc.defineParameter("FIXED_UE3", "Bind to a specific UE",
-                   portal.ParameterType.STRING, "", advanced=True,
-                   longDescription="Input the name of a PhantomNet UE node to allocate (e.g., 'ue3').  Leave blank to let the mapping algorithm choose.")
-pc.defineParameter("FIXED_UE4", "Bind to a specific UE",
-                   portal.ParameterType.STRING, "", advanced=True,
-                   longDescription="Input the name of a PhantomNet UE node to allocate (e.g., 'ue4').  Leave blank to let the mapping algorithm choose.")
-"""
 pc.defineParameter("FIXED_ENB", "Bind to a specific eNodeB",
                    portal.ParameterType.STRING, "", advanced=True,
                    longDescription="Input the name of a PhantomNet eNodeB device to allocate (e.g., 'nuc1').  Leave blank to let the mapping algorithm choose.  If you bind both UE and eNodeB devices, mapping will fail unless there is path between them via the attenuator matrix.")
@@ -159,8 +151,7 @@ else:
     enb1.addService(rspec.Execute(shell="sh", command=GLOBALS.OAI_CONF_SCRIPT + " -r ENB"))
     enb1_rue1_rf = enb1.addInterface("rue1_rf")
     enb1_rue2_rf = enb1.addInterface("rue2_rf")
-    #enb1_rue3_rf = enb1.addInterface("rue3_rf")
-    #enb1_rue4_rf = enb1.addInterface("rue4_rf")
+
 
     # Add an OTS (Nexus 5) UE 1
     rue1 = request.UE("rue1")
@@ -190,36 +181,9 @@ else:
     rflink2.addInterface(enb1_rue2_rf)
     rflink2.addInterface(rue2_enb1_rf)
 
+
     # Add a link connecting the NUC eNB and the OAI EPC node.
     epclink.addNode(enb1)
-"""
-    # Add an OTS (Nexus 5) UE 3
-    rue3 = request.UE("rue3")
-    if params.FIXED_UE3:
-        rue3.component_id = params.FIXED_UE3
-    rue3.hardware_type = GLOBALS.UE_HWTYPE
-    rue3.disk_image = GLOBALS.UE_IMG
-    rue3.Desire("rf-radiated" if params.TYPE == "ota" else "rf-controlled", 1)
-    rue3.adb_target = "adb-tgt"
-    rue3_enb1_rf = rue3.addInterface("enb3_rf")
-
-    # Add an OTS (Nexus 5) UE 4
-    rue4 = request.UE("rue4")
-    if params.FIXED_UE4:
-        rue4.component_id = params.FIXED_UE4
-    rue4.hardware_type = GLOBALS.UE_HWTYPE
-    rue4.disk_image = GLOBALS.UE_IMG
-    rue4.Desire("rf-radiated" if params.TYPE == "ota" else "rf-controlled", 1)
-    rue4.adb_target = "adb-tgt"
-    rue4_enb1_rf = rue4.addInterface("enb4_rf")
-
-    rflink3 = request.RFLink("rflink3")
-    rflink3.addInterface(enb1_rue3_rf)
-    rflink3.addInterface(rue3_enb1_rf)
-    rflink4 = request.RFLink("rflink4")
-    rflink4.addInterface(enb1_rue4_rf)
-    rflink4.addInterface(rue4_enb1_rf) """
-
 
 # Add OAI EPC (HSS, MME, SPGW) node.
 epc = request.RawPC("epc")
